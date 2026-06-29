@@ -1,1 +1,277 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>InstaGet - Instagram Downloader | Save Reels, Posts, Photos & DP</title>
+    <meta name="description" content="Free Instagram downloader. Download reels, videos, photos, carousel posts and profile pictures in HD quality. No login required.">
+    <meta name="keywords" content="instagram downloader, instagram reel download, instagram photo download, instagram dp download, save instagram">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="InstaGet - Instagram Downloader">
+    <meta property="og:description" content="Download Instagram content in HD. Free and easy.">
+    <meta name="theme-color" content="#E1306C">
+    
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f8fafc;min-height:100vh;color:#1e293b}
+        
+        .header{background:white;padding:16px;text-align:center;border-bottom:1px solid #e2e8f0;position:sticky;top:0;z-index:100}
+        .logo{font-size:1.4em;font-weight:800;background:linear-gradient(45deg,#833AB4,#E1306C,#F77737);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        
+        .container{max-width:500px;margin:0 auto;padding:15px}
+        
+        .hero{background:linear-gradient(135deg,#833AB4,#E1306C,#F77737);color:white;text-align:center;padding:30px 20px;border-radius:20px;margin-bottom:20px}
+        .hero h1{font-size:1.6em;margin-bottom:5px}
+        .hero p{opacity:0.9;font-size:0.9em}
+        
+        .card{background:white;border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.06);margin-bottom:15px}
+        .card h2{font-size:1.1em;margin-bottom:15px}
+        
+        input{width:100%;padding:14px;border:2px solid #e2e8f0;border-radius:12px;font-size:15px;margin-bottom:10px}
+        input:focus{outline:none;border-color:#E1306C}
+        
+        .btn{width:100%;padding:15px;background:linear-gradient(135deg,#833AB4,#E1306C);color:white;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;margin-bottom:10px}
+        .btn:active{transform:scale(0.97)}
+        
+        .btn-green{background:#10b981;display:none;margin-top:10px}
+        .btn-green.show{display:block}
+        
+        .msg{padding:12px;border-radius:10px;margin:10px 0;font-size:0.85em;display:none;text-align:center}
+        .msg.show{display:block}
+        .msg.error{background:#fef2f2;color:#991b1b}
+        .msg.success{background:#f0fdf4;color:#166534}
+        .msg.info{background:#eff6ff;color:#1e40af}
+        
+        .result{display:none;margin-top:12px}
+        .result.show{display:block}
+        .result img,.result video{width:100%;border-radius:12px;max-height:400px;object-fit:contain;background:#000}
+        
+        .dp-img{width:140px;height:140px;border-radius:50%;object-fit:cover;border:5px solid white;box-shadow:0 8px 25px rgba(0,0,0,0.12);display:block;margin:0 auto}
+        
+        .blog{background:white;border-radius:16px;padding:20px;margin-bottom:15px;box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+        .blog h3{color:#833AB4;margin:12px 0 5px;font-size:0.95em}
+        .blog p{font-size:0.85em;color:#555;line-height:1.5;margin-bottom:8px}
+        
+        .features{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:15px 0}
+        .feat{text-align:center;padding:14px 6px;background:white;border-radius:12px;font-size:0.72em;font-weight:600;color:#777;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+        .feat span{font-size:1.6em;display:block;margin-bottom:4px}
+        
+        .ad-box{background:white;padding:20px;border-radius:16px;text-align:center;margin-bottom:15px;border:2px dashed #e2e8f0;color:#94a3b8;min-height:90px;display:flex;align-items:center;justify-content:center}
+        
+        .footer{text-align:center;padding:15px;color:#94a3b8;font-size:0.75em}
+        .footer a{color:#E1306C;text-decoration:none;margin:0 8px}
+        
+        .howto{background:#f1f5f9;border-radius:12px;padding:15px;margin-top:10px}
+        .step{display:flex;gap:10px;margin-bottom:8px;padding:8px;background:white;border-radius:8px;font-size:0.85em}
+        .num{background:linear-gradient(135deg,#833AB4,#E1306C);color:white;min-width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+        
+        @media(max-width:400px){.features{grid-template-columns:repeat(2,1fr)}}
+    </style>
+</head>
+<body>
+    <header class="header"><span class="logo">📸 InstaGet</span></header>
+    
+    <div class="container">
+        <div class="hero">
+            <h1>Instagram Downloader</h1>
+            <p>Reels • Posts • Carousel • DP • Free</p>
+        </div>
+        
+        <!-- DOWNLOADER -->
+        <div class="card">
+            <h2>📥 Download Instagram Content</h2>
+            <input type="text" id="instaUrl" placeholder="Paste Instagram link here..." autocomplete="off">
+            <button class="btn" onclick="downloadContent()">⬇️ Download</button>
+            
+            <div class="msg" id="msg"></div>
+            <div class="result" id="result">
+                <div id="mediaContent"></div>
+            </div>
+        </div>
+        
+        <!-- DP DOWNLOADER -->
+        <div class="card">
+            <h2>👤 Profile Picture Downloader</h2>
+            <input type="text" id="dpUser" placeholder="Enter username (without @)" autocomplete="off">
+            <button class="btn" onclick="getDP()">🔍 View Full Size DP</button>
+            
+            <div class="msg" id="dpMsg"></div>
+            <div class="result" id="dpResult">
+                <div style="text-align:center">
+                    <img id="dpImg" class="dp-img" src="" alt="DP">
+                    <p style="font-weight:bold;margin:10px 0" id="dpName"></p>
+                    <button class="btn btn-green show" onclick="saveDP()">💾 Save Profile Picture</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- BLOG -->
+        <div class="blog">
+            <h3>📝 How to Download Instagram Content</h3>
+            <h3>🎬 Download Instagram Reels</h3>
+            <p>Copy the reel link from Instagram app (Share → Copy Link), paste it in the box above, and download in HD quality.</p>
+            <h3>📷 Save Posts & Photos</h3>
+            <p>Found a photo you love? Copy the post link and save it to your device in original quality.</p>
+            <h3>👤 Profile Picture Downloader</h3>
+            <p>Want to see someone's DP in full size? Just enter their username above and view/download the HD version.</p>
+        </div>
+        
+        <!-- FEATURES -->
+        <div class="features">
+            <div class="feat"><span>🎬</span>Reels</div>
+            <div class="feat"><span>📷</span>Posts</div>
+            <div class="feat"><span>🖼️</span>Carousel</div>
+            <div class="feat"><span>👤</span>DP</div>
+        </div>
+        
+        <!-- AD -->
+        <div class="ad-box">
+            📢 Advertisement
+            <!-- Paste Google AdSense code here -->
+        </div>
+        
+        <!-- FOOTER -->
+        <footer class="footer">
+            <a href="#" onclick="alert('We do not collect any personal data.')">Privacy Policy</a> |
+            <a href="#" onclick="alert('For personal use only. Respect copyright.')">Terms of Service</a> |
+            <a href="#" onclick="alert('Email: support@instaget.app')">Contact Us</a>
+            <p style="margin-top:8px">© 2024 InstaGet. Not affiliated with Instagram (Meta).</p>
+        </footer>
+    </div>
+
+    <script>
+        // ============ DOWNLOAD POST/REEL ============
+        async function downloadContent() {
+            const url = document.getElementById('instaUrl').value.trim();
+            const result = document.getElementById('result');
+            const media = document.getElementById('mediaContent');
+            const msg = document.getElementById('msg');
+            
+            result.classList.remove('show');
+            media.innerHTML = '';
+            msg.classList.remove('show');
+
+            if (!url) return showMsg('msg', 'Please paste an Instagram link', 'error');
+            if (!url.includes('instagram.com')) return showMsg('msg', 'Invalid Instagram URL', 'error');
+
+            // Extract shortcode
+            const match = url.match(/instagram\.com\/(p|reel|tv)\/([^/?]+)/);
+            if (!match) return showMsg('msg', 'Invalid link. Use post, reel, or IGTV URLs.', 'error');
+            
+            const shortcode = match[2];
+            const isReel = url.includes('/reel/');
+            
+            showMsg('msg', '🔍 Fetching content...', 'info');
+
+            try {
+                // Use Instagram's oEmbed API
+                const apiUrl = `https://api.instagram.com/oembed?url=https://www.instagram.com/p/${shortcode}/`;
+                const res = await fetch(apiUrl);
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.thumbnail_url) {
+                        const isVideo = data.media_type === 'video' || isReel;
+                        
+                        media.innerHTML = `
+                            ${isVideo 
+                                ? `<video src="${data.thumbnail_url}" controls playsinline style="width:100%;border-radius:12px;max-height:400px;"></video>`
+                                : `<img src="${data.thumbnail_url}" alt="Instagram post" style="width:100%;border-radius:12px;max-height:400px;">`
+                            }
+                            ${data.title ? `<p style="margin-top:8px;font-size:0.85em;color:#555;">${data.title}</p>` : ''}
+                            <p style="margin-top:8px;font-size:0.8em;color:#888;">
+                                💡 To save: <strong>Long press</strong> on the ${isVideo ? 'video' : 'image'} → <strong>Save</strong>
+                            </p>
+                            <button class="btn btn-green show" onclick="openInNewTab('${data.thumbnail_url}')">
+                                📥 Open & Download
+                            </button>
+                        `;
+                        
+                        result.classList.add('show');
+                        showMsg('msg', '✅ Content ready! Long press to save, or tap Download button.', 'success');
+                        result.scrollIntoView({ behavior: 'smooth' });
+                    }
+                } else {
+                    // CDN Fallback
+                    const cdnUrl = `https://www.instagram.com/p/${shortcode}/media/?size=l`;
+                    media.innerHTML = `
+                        <img src="${cdnUrl}" alt="Instagram post" style="width:100%;border-radius:12px;max-height:400px;">
+                        <p style="margin-top:8px;font-size:0.8em;color:#888;">
+                            💡 To save: <strong>Long press</strong> on the image → <strong>Save Image</strong>
+                        </p>
+                        <button class="btn btn-green show" onclick="openInNewTab('${cdnUrl}')">
+                            📥 Open Full Size & Download
+                        </button>
+                    `;
+                    result.classList.add('show');
+                    showMsg('msg', '✅ Ready! Use the button or long press to save.', 'success');
+                    result.scrollIntoView({ behavior: 'smooth' });
+                }
+            } catch (error) {
+                showMsg('msg', '❌ Could not load. Post may be private.', 'error');
+            }
+        }
+
+        function openInNewTab(url) {
+            window.open(url, '_blank');
+            showMsg('msg', '📱 Opening... Long press on the image to save it.', 'info');
+        }
+
+        // ============ DP DOWNLOADER ============
+        let currentDpUrl = null;
+
+        function getDP() {
+            const username = document.getElementById('dpUser').value.trim().replace('@', '').split('/')[0];
+            const dpResult = document.getElementById('dpResult');
+            const dpMsg = document.getElementById('dpMsg');
+            
+            dpResult.classList.remove('show');
+            dpMsg.classList.remove('show');
+            currentDpUrl = null;
+
+            if (!username) return showMsg('dpMsg', 'Please enter a username', 'error');
+
+            // Instagram CDN - always works for public accounts
+            currentDpUrl = `https://www.instagram.com/${username}/profile_pic.jpg`;
+            
+            document.getElementById('dpImg').src = currentDpUrl;
+            document.getElementById('dpName').textContent = '@' + username;
+            dpResult.classList.add('show');
+            showMsg('dpMsg', '✅ Profile picture loaded! Tap Save to download.', 'success');
+        }
+
+        function saveDP() {
+            if (!currentDpUrl) return;
+            window.open(currentDpUrl, '_blank');
+            showMsg('dpMsg', '📱 Opening image... Long press to save to gallery.', 'info');
+        }
+
+        // ============ HELPERS ============
+        function showMsg(id, text, type) {
+            const el = document.getElementById(id);
+            el.textContent = text;
+            el.className = 'msg ' + type + ' show';
+            if (type === 'success' || type === 'info') {
+                setTimeout(() => el.classList.remove('show'), 6000);
+            }
+        }
+
+        // Enter key support
+        document.getElementById('instaUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') downloadContent();
+        });
+        document.getElementById('dpUser').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') getDP();
+        });
+
+        // Auto-paste
+        document.getElementById('instaUrl').addEventListener('paste', function() {
+            setTimeout(() => {
+                if (this.value.trim()) downloadContent();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
